@@ -1,0 +1,49 @@
+plugins {
+    id 'groovy-gradle-plugin'
+    id 'maven-publish'
+}
+//apply plugin: 'groovy-gradle-plugin'
+//apply plugin: 'maven-publish'
+
+group 'top.jiangliuhong.gradle'
+version '1.0-SNAPSHOT'
+
+
+gradlePlugin {
+    plugins {
+        sourceJar {
+            id = "top.jiangliuhong.gradle.SourceJar"
+            implementationClass = "top.jiangliuhong.gradle.plugins.SourceJarPlugin"
+        }
+    }
+}
+
+dependencies {
+
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = "gradle-plugins"
+            version = project.version
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            // 基于版本名称选择不同的仓库地址
+            // url是必须要配置的
+            url = project.version.endsWith('SNAPSHOT') ? SNAPSHOTS_REPO_URL : RELEASES_REPO_URL
+            allowInsecureProtocol = true
+            def un = project.version.endsWith('SNAPSHOT') ? SNAPSHOTS_USER_NAME : RELEASES_USER_NAME
+            def pw = project.version.endsWith('SNAPSHOT') ? SNAPSHOTS_PASSWORD : RELEASES_PASSWORD
+            credentials {
+                username un
+                password pw
+            }
+        }
+    }
+
+}
