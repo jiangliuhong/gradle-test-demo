@@ -1,0 +1,6 @@
+plugins {
+}
+
+group 'top.jiangliuhong.gradle'
+version '1.0-SNAPSHOT'
+
